@@ -1,6 +1,7 @@
 import { envVars, logger } from '@/config';
 import { NotFoundError } from '@/errors';
 import { errorHandler } from '@/middlewares';
+import { authRouter } from '@/routes';
 import { Hono } from 'hono';
 import { logger as loggerMiddleware } from 'hono/logger';
 import { trimTrailingSlash } from 'hono/trailing-slash';
@@ -13,6 +14,8 @@ app.use(trimTrailingSlash());
 app.get('/', (c) => {
 	return c.text('Hello Hono!');
 });
+
+app.route('/auth', authRouter);
 
 app.notFound(() => {
 	throw new NotFoundError();
