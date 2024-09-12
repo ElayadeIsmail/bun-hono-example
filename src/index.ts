@@ -1,24 +1,24 @@
+import { envVars, logger } from '@/config';
+import { NotFoundError } from '@/errors';
+import { errorHandler } from '@/middlewares';
 import { Hono } from 'hono';
-import { logger } from 'hono/logger';
+import { logger as loggerMiddleware } from 'hono/logger';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 
 const app = new Hono();
 
-app.use(logger());
+app.use(loggerMiddleware());
 app.use(trimTrailingSlash());
 
 app.get('/', (c) => {
-	throw Error('Fun Error');
-	// return c.text('Hello Hono!');
+	return c.text('Hello Hono!');
 });
 
-app.notFound((c) => {
-	return c.text('Custom 404 Message', 404);
+app.notFound(() => {
+	throw new NotFoundError();
 });
 
-app.onError((err, c) => {
-	console.error(`${err}`);
-	return c.text('Custom Error Message', 500);
-});
+app.onError(errorHandler);
 
-export default { fetch: app.fetch, port: 8080 };
+export default { fetch: app.fetch, port: envVars.port };
+logger.info(`Server Started On Port ${envVars.port}`);
