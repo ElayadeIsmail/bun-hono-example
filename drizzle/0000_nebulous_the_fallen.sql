@@ -1,8 +1,8 @@
 CREATE TABLE `sessions` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
-	`agent` text NOT NULL,
-	`ip` text NOT NULL,
+	`agent` text,
+	`ip` text,
 	`expiresAt` integer NOT NULL,
 	`created_at` integer DEFAULT (unixepoch()) NOT NULL,
 	`updated_at` integer DEFAULT (unixepoch()) NOT NULL

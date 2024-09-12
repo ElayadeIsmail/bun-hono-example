@@ -22,16 +22,16 @@ export const usersRelations = relations(users, ({ many }) => ({
 	sessions: many(sessions),
 }));
 
-export const User = users.$inferSelect;
-export const NewUser = users.$inferInsert;
+export type User = typeof users.$inferSelect;
+export type NewUser = typeof users.$inferInsert;
 
 export const sessions = sqliteTable('sessions', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => createId()),
 	userId: text('user_id').notNull(),
-	agent: text('agent').notNull(),
-	ip: text('ip').notNull(),
+	agent: text('agent'),
+	ip: text('ip'),
 	expiresAt: integer('expiresAt', { mode: 'timestamp' }).notNull(),
 	createdAt: integer('created_at', { mode: 'timestamp' })
 		.notNull()
@@ -49,5 +49,5 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 	}),
 }));
 
-export const Session = sessions.$inferSelect;
-export const NewSession = sessions.$inferInsert;
+export type Session = typeof sessions.$inferSelect;
+export type NewSession = typeof sessions.$inferInsert;
